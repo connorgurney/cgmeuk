@@ -16,27 +16,37 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+      - name: Upload build artefacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
   test:
     name: Test
     runs-on: ubuntu-latest
+    needs: build
     permissions:
       contents: read
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - name: Download build artefacts
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
   release:
     name: Release
     runs-on: ubuntu-latest
+    needs: [build, test]
     permissions:
       contents: read
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v2
+      - name: Download build artefacts
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
       - name: Initialise Terraform
-        working-directory: infra
+        working-directory: dist/infra
         run: terraform init -var-file=../config/infra/prod.tfvars
       - name: Apply Terraform changes
-        working-directory: infra
+        working-directory: dist/infra
         run: terraform apply -auto-approve -var-file=../config/infra/prod.tfvars
