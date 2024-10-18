@@ -24,8 +24,8 @@ provider "aws" {
   
   default_tags {
     tags = {
-      "connorgurney:workload"    = "cgmeuk"
-      "connorgurney:environment" = var.environment
+      "connorgurney-workload"    = "cgmeuk"
+      "connorgurney-environment" = var.environment
     }
   }
 }
