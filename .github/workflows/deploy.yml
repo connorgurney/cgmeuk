@@ -47,7 +47,7 @@ jobs:
           name: dist
       - name: Initialise Terraform
         working-directory: infra
-        run: terraform init -var-file=../config/infra/prod.tfvars
+        run: terraform init -var-file=../cgmeuk/settings/prod.tfvars
       - name: Apply Terraform changes
         working-directory: infra
-        run: terraform apply -auto-approve -var-file=../config/infra/prod.tfvars
+        run: terraform apply -auto-approve -var-file=../cgmeuk/settings/prod.tfvars
